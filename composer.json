@@ -1,0 +1,14 @@
+{
+    "name": "kolobokhtc/facebook-bot",
+    "description": "bot for facebook webhook",
+    "authors": [
+        {
+            "name": "Vladimir Pavlov",
+            "email": "kolobokhtc@gmail.com"
+        }
+    ],
+    "autoload":{
+      "psr-4": {"FacebookBot\\": "src/"}
+    },
+    "require": {}
+}
