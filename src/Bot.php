@@ -85,7 +85,7 @@ class Bot
                 throw new \RuntimeException('Invalid json request', 1);
             }
 
-            $event = Factory::makeFromApi($event);
+            $event = Factory::makeFromApi($eventBody);
 
         } elseif (!$event instanceof Event) {
             throw new \RuntimeException('Event must be instance of FacebookBot\Api\Event', 2);
