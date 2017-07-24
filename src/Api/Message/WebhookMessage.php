@@ -11,7 +11,7 @@ namespace FacebookBot\Api\Message;
 use FacebookBot\Api\Attachment;
 use FacebookBot\Api\Entity;
 
-class WebhookMessages extends Entity
+class WebhookMessage extends Entity
 {
 
     public $mid;
