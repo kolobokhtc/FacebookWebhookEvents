@@ -15,27 +15,25 @@ try {
     $client = new Client();
 
     $json_test = '{
-  "sender":{
-    "id":"PAGE_ID"
-  },
-  "recipient":{
-    "id":"USER_ID"
-  },
-  "timestamp":1458696618268,
-  "message":{
-    "app_id":1517776481860111,
-    "metadata": "DEVELOPER_DEFINED_METADATA_STRING",
-    "mid":"mid.1458696618141:b4ef9d19ec21086067",
-    "attachments":[
-      {
-        "type":"image",
-        "payload":{
-          "url":"IMAGE_URL"
-        }
+      "sender":{
+        "id":"USER_ID"
+      },
+      "recipient":{
+        "id":"PAGE_ID"
+      },
+      "timestamp":1458692752478,
+      "message":{
+        "mid":"mid.1458696618141:b4ef9d19ec21086067",
+        "attachments":[
+          {
+            "type":"fallback",
+            "payload":null,
+            "title":"TITLE_OF_THE_URL_ATTACHMENT",
+            "URL":"URL_OF_THE_ATTACHMENT"
+          }
+        ]
       }
-    ]
-  }
-}   ';
+    }';
 
     $data = json_decode($json_test, TRUE);
 
@@ -43,8 +41,11 @@ try {
 
     try {
         $bot = new \FacebookBot\Bot();
-        $bot->onMessage(function (Event $event) {
+        $bot->onMessage('|hello|i', function (Event $event) {
             echo "MESSAGE RECEIVE CALLBACK\n";
+            $data = $event->getEvent();
+        })->onMessageWithAttachment('|.*|i', function (Event $event) {
+            echo "MESSAGE WITH ATTACHMENT RECEIVE CALLBACK\n";
             $data = $event->getEvent();
         })->onDelivery(function ($event) {
             echo "MESSAGE DELIVERY CALLBACK\n";
