@@ -18,7 +18,7 @@ class WebhookMessage extends Entity
 
     public $text;
 
-    public $attachments;
+    public $attachments = null;
 
     public function toArray()
     {
