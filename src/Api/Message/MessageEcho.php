@@ -8,7 +8,7 @@
 namespace FacebookBot\Api\Message;
 
 
-class MessageEcho extends WebhookMessages
+class MessageEcho extends WebhookMessage
 {
 
     public $is_echo;

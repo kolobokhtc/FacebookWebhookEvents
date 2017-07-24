@@ -34,6 +34,19 @@ class Bot
         return $this;
     }
 
+    public function onMessageWithAttachment($regex, \Closure $handler)
+    {
+        $this->managers[] = new Manager(function (Event $event) use ($regex) {
+            return (
+                $event instanceof \FacebookBot\Api\Event\Message
+                && preg_match($regex, $event->getEvent()->getMessage()->getText())
+                && $event->getEvent()->getMessage()->getAttachments()
+            );
+        }, $handler);
+
+        return $this;
+    }
+
     public function onDelivery(\Closure $handler)
     {
         $this->managers[] = new Manager(function (Event $event) {
