@@ -11,7 +11,7 @@ namespace FacebookBot\Api\Message;
 use FacebookBot\Api\Attachment;
 use FacebookBot\Api\Entity;
 
-class Attachments extends Entity
+class WebhookMessages extends Entity
 {
 
     public $mid;
@@ -70,14 +70,6 @@ class Attachments extends Entity
     public function getText()
     {
         return $this->text;
-    }
-
-    /**
-     * @param mixed $text
-     */
-    public function setText($text)
-    {
-        $this->text = $text;
     }
 
 

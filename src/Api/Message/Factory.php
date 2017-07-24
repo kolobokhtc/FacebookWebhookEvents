@@ -7,8 +7,6 @@
 
 namespace FacebookBot\Api\Message;
 
-use FacebookBot\Api\Exception\ApiException;
-
 class Factory
 {
 
@@ -16,14 +14,13 @@ class Factory
     {
 
         if (isset($message['quick_reply'])) {
-            return new Text($message);
+            return new QuickReply($message);
+        } elseif (isset($message['is_echo'])) {
+            return new MessageEcho($message);
+        } else {
+            return new WebhookMessage($message);
         }
 
-        if (isset($message['attachments'])) {
-            return new Attachments($message);
-        }
-
-        throw new ApiException('unknown message data');
     }
 
 }

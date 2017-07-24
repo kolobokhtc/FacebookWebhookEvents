@@ -14,6 +14,11 @@ class Factory
     public static function makeFromApi(array $data)
     {
         if (isset($data['message'])) {
+
+            if (isset($data['message']['is_echo'])) {
+                return new MessageEcho($data);
+            }
+
             return new Message($data);
         } elseif (isset($data['delivery'])) {
             return new Delivered($data);

@@ -7,28 +7,35 @@
 
 require_once("../vendor/autoload.php");
 
-use FacebookBot\Api\Event\Factory;
 use FacebookBot\Api\Event;
+use FacebookBot\Api\Event\Factory;
 use FacebookBot\Client;
 
 try {
     $client = new Client();
 
     $json_test = '{
-           "sender":{
-              "id":"USER_ID"
-           },
-           "recipient":{
-              "id":"PAGE_ID"
-           },
-           "delivery":{
-              "mids":[
-                 "mid.1458668856218:ed81099e15d3f4f233"
-              ],
-              "watermark":1458668856253,
-              "seq":37
-           }
-        }    ';
+  "sender":{
+    "id":"PAGE_ID"
+  },
+  "recipient":{
+    "id":"USER_ID"
+  },
+  "timestamp":1458696618268,
+  "message":{
+    "app_id":1517776481860111,
+    "metadata": "DEVELOPER_DEFINED_METADATA_STRING",
+    "mid":"mid.1458696618141:b4ef9d19ec21086067",
+    "attachments":[
+      {
+        "type":"image",
+        "payload":{
+          "url":"IMAGE_URL"
+        }
+      }
+    ]
+  }
+}   ';
 
     $data = json_decode($json_test, TRUE);
 
@@ -37,8 +44,16 @@ try {
     try {
         $bot = new \FacebookBot\Bot();
         $bot->onMessage(function (Event $event) {
+            echo "MESSAGE RECEIVE CALLBACK\n";
             $data = $event->getEvent();
-        })->onDelivery(function($event){
+        })->onDelivery(function ($event) {
+            echo "MESSAGE DELIVERY CALLBACK\n";
+            $data = $event->getEvent();
+        })->onRead(function ($event) {
+            echo "MESSAGE READ CALLBACK\n";
+            $data = $event->getEvent();
+        })->onEcho(function ($event) {
+            echo "MESSAGE ECHO CALLBACK\n";
             $data = $event->getEvent();
         })->run($event);
     } catch (RuntimeException $e) {
