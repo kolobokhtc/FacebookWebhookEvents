@@ -22,10 +22,13 @@ class Bot
         $this->managers[] = new Manager($checker, $handler);
     }
 
-    public function onMessage(\Closure $handler)
+    public function onMessage($regex, \Closure $handler)
     {
-        $this->managers[] = new Manager(function (Event $event) {
-            return ($event instanceof \FacebookBot\Api\Event\Message);
+        $this->managers[] = new Manager(function (Event $event) use ($regex) {
+            return (
+                $event instanceof \FacebookBot\Api\Event\Message
+                && preg_match($regex, $event->getEvent()->getMessage()->getText())
+            );
         }, $handler);
 
         return $this;
