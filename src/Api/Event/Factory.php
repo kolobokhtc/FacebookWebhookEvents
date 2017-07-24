@@ -17,6 +17,8 @@ class Factory
             return new Message($data);
         } elseif (isset($data['delivery'])) {
             return new Delivered($data);
+        } elseif ((isset($data['read']))) {
+            return new Read($data);
         }
     }
 

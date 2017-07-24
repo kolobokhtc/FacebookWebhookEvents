@@ -40,6 +40,15 @@ class Bot
         return $this;
     }
 
+    public function onRead(\Closure $handler)
+    {
+        $this->managers[] = new Manager(function (Event $event) {
+            return ($event instanceof \FacebookBot\Api\Event\Read);
+        }, $handler);
+
+        return $this;
+    }
+
     public function run($event = null)
     {
         if (is_null($event)) {
