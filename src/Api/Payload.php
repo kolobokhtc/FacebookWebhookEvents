@@ -35,7 +35,7 @@ class Payload extends Entity
      */
     public function getTitle()
     {
-        return $this->text;
+        return $this->title;
     }
 
 

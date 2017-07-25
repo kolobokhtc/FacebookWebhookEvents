@@ -82,6 +82,8 @@ class Entry extends Entity
                 $result[] = new Read($message);
             } else if (isset($message['delivery'])) {
                 $result[] = new Delivered($message);
+            } else if (isset($message['postback'])) {
+                $result[] = new PostbackMessage($message);
             } else {
                 $result[] = new Message($message);
             }
