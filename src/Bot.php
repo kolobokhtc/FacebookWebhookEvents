@@ -106,9 +106,7 @@ class Bot
             $event = Factory::makeFromApi($eventBody);
 
         }
-//        elseif (!$event instanceof Event) {
-//            throw new \RuntimeException('Event must be instance of FacebookBot\Api\Event', 2);
-//        }
+
         if (is_array($event)) {
             foreach ($event as $i) {
                 $this->_process($i);
@@ -122,6 +120,11 @@ class Bot
 
     private function _process(Event $event)
     {
+
+        if (!$event instanceof Event) {
+            throw new \RuntimeException('Event must be instance of FacebookBot\Api\Event', 2);
+        }
+
         foreach ($this->managers as $manager) {
             if ($manager->isMatch($event)) {
                 $returnValue = $manager->runHandler($event);
