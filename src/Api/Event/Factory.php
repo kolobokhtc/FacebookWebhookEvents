@@ -13,6 +13,11 @@ class Factory
 
     public static function makeFromApi(array $data)
     {
+
+        if (isset($data['object'])){
+            return new FacebookObject($data);
+        }
+
         if (isset($data['message'])) {
 
             if (isset($data['message']['is_echo'])) {

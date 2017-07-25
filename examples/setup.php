@@ -14,34 +14,32 @@ use FacebookBot\Client;
 try {
     $client = new Client();
 
-    $json_test = '{
-      "sender":{
-        "id":"USER_ID"
-      },
-      "recipient":{
-        "id":"PAGE_ID"
-      },
-      "timestamp":1458692752478,
-      "message":{
-        "mid":"mid.1458696618141:b4ef9d19ec21086067",
-        "attachments":[
-          {
-            "type":"fallback",
-            "payload":null,
-            "title":"TITLE_OF_THE_URL_ATTACHMENT",
-            "URL":"URL_OF_THE_ATTACHMENT"
-          }
-        ]
-      }
-    }';
+    $json_test = ' {
+    "object":"page",
+    "entry":
+        [
+            {
+            "id":"1104343819608576",
+            "time":1500968748826,
+            "messaging":
+                [
+                    {
+                        "sender": {"id":"863758473728483"},
+                        "recipient":{"id":"1104343819608576"},
+                        "timestamp":1500967833470,
+                        "message":{"mid":"mid.$cAAPsZVYUuwhjqezXfldeKebmz8g-","seq":4950,"text":"hello"}}]}]}';
 
     $data = json_decode($json_test, TRUE);
-
     $event = Factory::makeFromApi($data);
 
     try {
         $bot = new \FacebookBot\Bot();
-        $bot->onMessage('|hello|i', function (Event $event) {
+
+        $bot->onObject(function ($event) {
+            echo "OBJECT RECEIVE CALLBACK\n";
+            $data = $event->getEvent();
+            var_dump($data);
+        })->onMessage('|hello|i', function (Event $event) {
             echo "MESSAGE RECEIVE CALLBACK\n";
             $data = $event->getEvent();
         })->onMessageWithAttachment('|.*|i', function (Event $event) {
