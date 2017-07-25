@@ -30,7 +30,7 @@ class FacebookObject extends Entity
 
         return [
             'object' => $this->getObject(),
-            'entry' => result
+            'entry' => $result
         ];
     }
 
