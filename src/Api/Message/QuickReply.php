@@ -10,7 +10,7 @@ namespace FacebookBot\Api\Message;
 use FacebookBot\Api\Entity;
 use FacebookBot\Api\Payload;
 
-class QuickReply extends Entity
+class QuickReply extends WebhookMessage
 {
 
     public $mid;
