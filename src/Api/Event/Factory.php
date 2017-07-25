@@ -26,9 +26,10 @@ class Factory
                     if (isset($entry['messaging']) && is_array($entry['messaging'])) {
                         foreach ($entry['messaging'] as $message){
                             if (isset($message['message'])) {
-
                                 if (isset($message['message']['is_echo'])) {
                                     $events[] = new MessageEcho($message);
+                                } elseif (isset($message['message']['quick_reply'])) {
+                                    $events[] = new QuickReply($message);
                                 } else {
                                     $events[] = new Message($message);
                                 }

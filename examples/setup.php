@@ -14,7 +14,7 @@ use FacebookBot\Client;
 try {
     $client = new Client();
 
-    $json_test = '{"object":"page","entry":[{"id":"1104343819608576","time":1500982723604,"messaging":[{"sender":{"id":"863758473728483"},"recipient":{"id":"1104343819608576"},"timestamp":1500982723603,"read":{"watermark":1500982723048,"seq":0}}]}]}';
+    $json_test = '{"object":"page","entry":[{"id":"1104343819608576","time":1500984951676,"messaging":[{"sender":{"id":"863758473728483"},"recipient":{"id":"1104343819608576"},"timestamp":1500984840177,"message":{"quick_reply":{"payload":"PAYLOAD"},"mid":"mid.$cAAPsZVYUuwhjqvBX8Vdeascl0bNI","seq":5067,"text":"QR button"}}]}]}';
     $data = json_decode($json_test, TRUE);
     $event = Factory::makeFromApi($data);
 
@@ -42,6 +42,10 @@ try {
         })->onEcho(function ($event) {
             echo "MESSAGE ECHO CALLBACK\n";
             $data = $event->getEvent();
+        })->onQuickReply(function ($event) {
+            echo "QUICK REPLY MESSAGE CALLBACK\n";
+            $data = $event->getEvent();
+            $payload = $data->getMessage()->getQuickReply()->getPayload();
         })->run($event);
     } catch (RuntimeException $e) {
         echo $e->getMessage();
