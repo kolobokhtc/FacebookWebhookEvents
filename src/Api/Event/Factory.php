@@ -24,7 +24,7 @@ class Factory
                     $events[] = new Entry($entry);
 
                     if (isset($entry['messaging']) && is_array($entry['messaging'])) {
-                        foreach ($entry['messaging'] as $message){
+                        foreach ($entry['messaging'] as $message) {
                             if (isset($message['message'])) {
                                 if (isset($message['message']['is_echo'])) {
                                     $events[] = new MessageEcho($message);
@@ -38,6 +38,8 @@ class Factory
                                 $events[] = new Delivered($message);
                             } elseif ((isset($message['read']))) {
                                 $events[] = new Read($message);
+                            } elseif ((isset($message['postback']))) {
+                                $events[] = new PostbackMessage($message);
                             }
                         }
                     }

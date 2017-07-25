@@ -12,9 +12,14 @@ class Payload extends Entity
 
     public $payload;
 
+    public $title;
+
     public function toArray()
     {
-        return ['payload' => $this->getPayload()];
+        return [
+            'payload' => $this->getPayload(),
+            'title' => $this->getTitle()
+        ];
     }
 
     /**
@@ -26,13 +31,12 @@ class Payload extends Entity
     }
 
     /**
-     * @param mixed $payload
+     * @return mixed
      */
-    public function setPayload($payload)
+    public function getTitle()
     {
-        $this->payload = $payload;
+        return $this->text;
     }
-
 
 
 }
