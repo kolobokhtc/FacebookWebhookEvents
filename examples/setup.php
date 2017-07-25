@@ -27,7 +27,18 @@ try {
                         "sender": {"id":"863758473728483"},
                         "recipient":{"id":"1104343819608576"},
                         "timestamp":1500967833470,
-                        "message":{"mid":"mid.$cAAPsZVYUuwhjqezXfldeKebmz8g-","seq":4950,"text":"hello"}}]}]}';
+                        "message":{"mid":"mid.$cAAPsZVYUuwhjqezXfldeKebmz8g-","seq":4950,"text":"hello"}
+                    },
+                    {
+                        "sender": {"id":"863758473728483"},
+                        "recipient":{"id":"1104343819608576"},
+                        "timestamp":1500967833470,
+                        "message":{"mid":"mid.$cAAPsZVYUuwhjqezXfldeKebmz8g-","seq":4950,"text":"hel2lo"}
+                    }
+                ]
+            }
+        ]
+    }';
 
     $data = json_decode($json_test, TRUE);
     $event = Factory::makeFromApi($data);
@@ -38,7 +49,9 @@ try {
         $bot->onObject(function ($event) {
             echo "OBJECT RECEIVE CALLBACK\n";
             $data = $event->getEvent();
-            var_dump($data);
+        })->onEntry(function ($event) {
+            echo "ENTRY RECEIVE CALLBACK\n";
+            $data = $event->getEvent();
         })->onMessage('|hello|i', function (Event $event) {
             echo "MESSAGE RECEIVE CALLBACK\n";
             $data = $event->getEvent();

@@ -14,22 +14,39 @@ class Factory
     public static function makeFromApi(array $data)
     {
 
-        if (isset($data['object'])){
-            return new FacebookObject($data);
-        }
+        $events = [];
 
-        if (isset($data['message'])) {
+        if (isset($data['object'])) {
+            $events[] = new FacebookObject($data);
 
-            if (isset($data['message']['is_echo'])) {
-                return new MessageEcho($data);
+            if (isset($data['entry']) && is_array($data['entry'])) {
+                foreach ($data['entry'] as $entry) {
+                    $events[] = new Entry($entry);
+
+                    if (isset($entry['messaging']) && is_array($entry['messaging'])) {
+                        foreach ($entry['messaging'] as $message){
+                            if (isset($message['message'])) {
+
+                                if (isset($message['message']['is_echo'])) {
+                                    $events[] = new MessageEcho($message);
+                                } else {
+                                    $events[] = new Message($message);
+                                }
+
+                            } elseif (isset($message['delivery'])) {
+                                $events[] = new Delivered($message);
+                            } elseif ((isset($message['read']))) {
+                                $events[] = new Read($message);
+                            }
+                        }
+                    }
+                }
             }
-
-            return new Message($data);
-        } elseif (isset($data['delivery'])) {
-            return new Delivered($data);
-        } elseif ((isset($data['read']))) {
-            return new Read($data);
         }
+
+
+        return $events;
+
     }
 
 }

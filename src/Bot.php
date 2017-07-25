@@ -31,6 +31,15 @@ class Bot
         return $this;
     }
 
+    public function onEntry(\Closure $handler)
+    {
+        $this->managers[] = new Manager(function (Event $event) {
+            return ($event instanceof \FacebookBot\Api\Event\Entry);
+        }, $handler);
+
+        return $this;
+    }
+
     public function onMessage($regex, \Closure $handler)
     {
         $this->managers[] = new Manager(function (Event $event) use ($regex) {
@@ -96,10 +105,23 @@ class Bot
 
             $event = Factory::makeFromApi($eventBody);
 
-        } elseif (!$event instanceof Event) {
-            throw new \RuntimeException('Event must be instance of FacebookBot\Api\Event', 2);
+        }
+//        elseif (!$event instanceof Event) {
+//            throw new \RuntimeException('Event must be instance of FacebookBot\Api\Event', 2);
+//        }
+        if (is_array($event)) {
+            foreach ($event as $i) {
+                $this->_process($i);
+            }
+        } else {
+            $this->_process($event);
         }
 
+        return $this;
+    }
+
+    private function _process(Event $event)
+    {
         foreach ($this->managers as $manager) {
             if ($manager->isMatch($event)) {
                 $returnValue = $manager->runHandler($event);
@@ -109,8 +131,6 @@ class Bot
                 break;
             };
         }
-
-        return $this;
     }
 
     public function outputEntity(Entity $entity)
