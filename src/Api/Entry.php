@@ -78,7 +78,13 @@ class Entry extends Entity
         $result = [];
 
         foreach ($this->messaging as $message) {
-            $result[] = new Message($message);
+            if (isset($message['read'])) {
+                $result[] = new Read($message);
+            } else if (isset($message['delivery'])) {
+                $result[] = new Delivered($message);
+            } else {
+                $result[] = new Message($message);
+            }
         }
 
         return $result;

@@ -14,32 +14,7 @@ use FacebookBot\Client;
 try {
     $client = new Client();
 
-    $json_test = ' {
-    "object":"page",
-    "entry":
-        [
-            {
-            "id":"1104343819608576",
-            "time":1500968748826,
-            "messaging":
-                [
-                    {
-                        "sender": {"id":"863758473728483"},
-                        "recipient":{"id":"1104343819608576"},
-                        "timestamp":1500967833470,
-                        "message":{"mid":"mid.$cAAPsZVYUuwhjqezXfldeKebmz8g-","seq":4950,"text":"hello"}
-                    },
-                    {
-                        "sender": {"id":"863758473728483"},
-                        "recipient":{"id":"1104343819608576"},
-                        "timestamp":1500967833470,
-                        "message":{"mid":"mid.$cAAPsZVYUuwhjqezXfldeKebmz8g-","seq":4950,"text":"hel2lo"}
-                    }
-                ]
-            }
-        ]
-    }';
-
+    $json_test = '{"object":"page","entry":[{"id":"1104343819608576","time":1500982723604,"messaging":[{"sender":{"id":"863758473728483"},"recipient":{"id":"1104343819608576"},"timestamp":1500982723603,"read":{"watermark":1500982723048,"seq":0}}]}]}';
     $data = json_decode($json_test, TRUE);
     $event = Factory::makeFromApi($data);
 
