@@ -119,6 +119,16 @@ class Bot
         return $this;
     }
 
+    public function onReferral(\Closure $handler)
+    {
+        $this->managers[] = new Manager(function (Event $event) {
+            return ($event instanceof \FacebookBot\Api\Event\Referral);
+        }, $handler);
+
+        return $this;
+    }
+
+
     public function run($event = null)
     {
         if (is_null($event)) {

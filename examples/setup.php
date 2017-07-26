@@ -14,20 +14,31 @@ use FacebookBot\Client;
 try {
     $client = new Client();
 
-    $json_test = '{"object":"page","entry":[{"id":"1104343819608576","time":1501055113722,"messaging":
-    [{
-  "sender":{
-    "id":"USER_ID"
-  },
-  "recipient":{
-    "id":"PAGE_ID"
-  },
-  "timestamp":1234567890,
-  "optin":{
-    "ref":"PASS_THROUGH_PARAM"
-  }
-}  ]}]}';
-    $data = json_decode($json_test, TRUE);
+    $json_test = '{
+    "object":"page",
+    "entry":
+        [
+            {
+                "id":"1104343819608576",
+                "time":1501055113722,
+                "messaging":
+                [
+                    {
+                        "sender":{"id":"<USER ID>"},
+                        "recipient":{"id":"<PAGE ID>"},
+                        "timestamp":1458692752478,
+                        "referral": {
+                            "ref": "REF DATA PASSED IN M.ME PARAM",
+                            "source": "SHORTLINK",
+                            "type": "OPEN_THREAD"
+                          }
+                    }  
+                ]
+            }
+        ]
+    }';
+    $data = json_decode($json_test, true, 512, JSON_BIGINT_AS_STRING);
+    var_dump($data);
     $event = Factory::makeFromApi($data);
 
     try {
@@ -62,10 +73,10 @@ try {
             echo "POST BACK MESSAGE CALLBACK\n";
             $data = $event->getEvent();
             $payload = $data->getPostback();
-            if (isset($payload->payload)){
+            if (isset($payload->payload)) {
                 $action = json_decode($payload->getPayload(), TRUE);
-                if (!json_last_error() && !empty($action)){
-                    if ($action['action'] == 'show_menu'){
+                if (!json_last_error() && !empty($action)) {
+                    if ($action['action'] == 'show_menu') {
                         echo 'there';
                     }
                 }
@@ -74,7 +85,16 @@ try {
             echo "OPTIN RECEIVED CALLBACK\n";
             $data = $event->getEvent();
             $optin = $data->getOptin();
-            $ref = $optin['ref'];
+            $ref = (isset($optin['ref'])) ? $optin['ref'] : FALSE;;
+        })->onReferral(function ($event) {
+            echo "REFERRAL RECEIVED CALLBACK\n";
+            $data = $event->getEvent();
+            $referral = $data->getReferral();
+            $ref = (isset($referral['ref'])) ? $referral['ref'] : FALSE;
+            $source = (isset($referral['source'])) ? $referral['source'] : FALSE;
+            $type = (isset($referral['type'])) ? $referral['type'] : FALSE;
+            $ad_id = (isset($referral['ad_id'])) ? $referral['ad_id'] : FALSE;
+            var_dump($ref, $source, $type, $ad_id);
         })->run($event);
     } catch (RuntimeException $e) {
         echo $e->getMessage();

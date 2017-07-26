@@ -33,7 +33,6 @@ class Factory
                                 } else {
                                     $events[] = new Message($message);
                                 }
-
                             } elseif (isset($message['delivery'])) {
                                 $events[] = new Delivered($message);
                             } elseif ((isset($message['read']))) {
@@ -42,6 +41,8 @@ class Factory
                                 $events[] = new PostbackMessage($message);
                             } elseif ((isset($message['optin']))) {
                                 $events[] = new Optin($message);
+                            } elseif ((isset($message['referral']))) {
+                                $events[] = new Referral($message);
                             }
                         }
                     }
