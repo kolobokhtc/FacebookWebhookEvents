@@ -84,6 +84,8 @@ class Entry extends Entity
                 $result[] = new Delivered($message);
             } else if (isset($message['postback'])) {
                 $result[] = new PostbackMessage($message);
+            }  else if (isset($message['optin'])) {
+                $result[] = new Optin($message);
             } else {
                 $result[] = new Message($message);
             }

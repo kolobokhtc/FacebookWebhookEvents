@@ -14,7 +14,19 @@ use FacebookBot\Client;
 try {
     $client = new Client();
 
-    $json_test = '{"object":"page","entry":[{"id":"1104343819608576","time":1500987491168,"messaging":[{"recipient":{"id":"1104343819608576"},"timestamp":1500987491168,"sender":{"id":"863758473728483"},"postback":{"payload":"First button","title":"First button"}}]}]}';
+    $json_test = '{"object":"page","entry":[{"id":"1104343819608576","time":1501055113722,"messaging":
+    [{
+  "sender":{
+    "id":"USER_ID"
+  },
+  "recipient":{
+    "id":"PAGE_ID"
+  },
+  "timestamp":1234567890,
+  "optin":{
+    "ref":"PASS_THROUGH_PARAM"
+  }
+}  ]}]}';
     $data = json_decode($json_test, TRUE);
     $event = Factory::makeFromApi($data);
 
@@ -49,7 +61,20 @@ try {
         })->onPostbackMessage(function ($event) {
             echo "POST BACK MESSAGE CALLBACK\n";
             $data = $event->getEvent();
-            $payload = $data->getPayload();
+            $payload = $data->getPostback();
+            if (isset($payload->payload)){
+                $action = json_decode($payload->getPayload(), TRUE);
+                if (!json_last_error() && !empty($action)){
+                    if ($action['action'] == 'show_menu'){
+                        echo 'there';
+                    }
+                }
+            }
+        })->onOptin(function ($event) {
+            echo "OPTIN RECEIVED CALLBACK\n";
+            $data = $event->getEvent();
+            $optin = $data->getOptin();
+            $ref = $optin['ref'];
         })->run($event);
     } catch (RuntimeException $e) {
         echo $e->getMessage();

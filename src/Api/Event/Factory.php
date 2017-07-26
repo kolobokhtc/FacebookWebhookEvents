@@ -40,6 +40,8 @@ class Factory
                                 $events[] = new Read($message);
                             } elseif ((isset($message['postback']))) {
                                 $events[] = new PostbackMessage($message);
+                            } elseif ((isset($message['optin']))) {
+                                $events[] = new Optin($message);
                             }
                         }
                     }
