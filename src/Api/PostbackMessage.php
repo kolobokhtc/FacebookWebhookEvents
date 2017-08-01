@@ -25,7 +25,7 @@ class PostbackMessage extends Entity
             'sender' => $this->getSender()->toArray(),
             'recipient' => $this->getRecipient()->toArray(),
             'timestamp' => $this->getTimestamp(),
-            'postback' => $this->getPostback()->toArray()
+            'postback' => $this->getPostback()
         ];
     }
 
@@ -58,7 +58,7 @@ class PostbackMessage extends Entity
      */
     public function getPostback()
     {
-        return new Payload($this->postback);
+        return $this->postback;
     }
 
 }
