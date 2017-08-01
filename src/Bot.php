@@ -40,6 +40,17 @@ class Bot
         return $this;
     }
 
+    public function onChanges(\Closure $handler)
+    {
+
+        $this->managers[] = new Manager(function (Event $event) {
+            return ($event instanceof \FacebookBot\Api\Event\Changes);
+        }, $handler);
+
+        return $this;
+
+    }
+
     public function onMessage($regex, \Closure $handler)
     {
         $this->managers[] = new Manager(function (Event $event) use ($regex) {
@@ -127,7 +138,6 @@ class Bot
 
         return $this;
     }
-
 
     public function run($event = null)
     {

@@ -46,6 +46,12 @@ class Factory
                             }
                         }
                     }
+
+                    if (isset($entry['changes']) && is_array($entry['changes'])){
+                        foreach ($entry['changes'] as $change) {
+                            $events[] = new Changes($change);
+                        }
+                    }
                 }
             }
         }

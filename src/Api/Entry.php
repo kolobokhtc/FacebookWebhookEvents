@@ -71,6 +71,11 @@ class Entry extends Entity
      */
     public function getMessaging()
     {
+
+        if (!isset($this->messaging)){
+            return false;
+        }
+
         if (!is_array($this->messaging)) {
             return new Message($this->messaging);
         }
