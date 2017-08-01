@@ -34,7 +34,7 @@ class WebhookMessage extends Entity
         }
 
         return [
-            'mid' => $this->mid,
+            'mid' => $this->getMid(),
             'text' => $this->getText(),
             'attachments' => $result
         ];
@@ -70,6 +70,14 @@ class WebhookMessage extends Entity
     public function getText()
     {
         return $this->text;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMid()
+    {
+        return $this->mid;
     }
 
 
