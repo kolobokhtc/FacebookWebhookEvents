@@ -17,9 +17,8 @@ use FacebookBot\Client;
 try {
     $client = new Client();
 
-    $json_test = '
-    {
-        "object": "page"
+    $json_test = '{
+        "object": "page",
         "entry": 
         [
             {
@@ -36,9 +35,9 @@ try {
                                  "thread_key": "t_100001042311435"
                              }
                      }
-                ],
+                ]
             }
-        ],
+        ]
     }';
     $data = json_decode($json_test, true, 512, JSON_BIGINT_AS_STRING);
     var_dump($data);
@@ -56,7 +55,13 @@ try {
         })->onChanges(function (Event $event) {
             echo "CHANGES EVENT CALLBACK\n";
             $data = $event->getEvent();
-            var_dump($data);
+            $field = $data->getField();
+            $value = $data->getValue();
+
+            $thread_id = (isset($value['thread_id'])) ? $value['thread_id'] : false;
+            $page_id = (isset($value['page_id'])) ? $value['page_id'] : false;
+            $thread_key = (isset($value['thread_key'])) ? $value['thread_key'] : false;
+
         })->run($event);
     } catch (RuntimeException $e) {
         echo $e->getMessage();
