@@ -40,7 +40,6 @@ try {
         ]
     }';
     $data = json_decode($json_test, true, 512, JSON_BIGINT_AS_STRING);
-    var_dump($data);
     $event = Factory::makeFromApi($data);
 
     try {
@@ -61,6 +60,8 @@ try {
             $thread_id = (isset($value['thread_id'])) ? $value['thread_id'] : false;
             $page_id = (isset($value['page_id'])) ? $value['page_id'] : false;
             $thread_key = (isset($value['thread_key'])) ? $value['thread_key'] : false;
+
+            var_dump($field, $value, $thread_id, $page_id, $thread_key);
 
         })->run($event);
     } catch (RuntimeException $e) {
