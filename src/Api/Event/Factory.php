@@ -21,35 +21,38 @@ class Factory
 
             if (isset($data['entry']) && is_array($data['entry'])) {
                 foreach ($data['entry'] as $entry) {
-                    $events[] = new Entry($entry);
+
+                    $entryEvent = new Entry($entry);
+
+                    $events[] = $entryEvent;
 
                     if (isset($entry['messaging']) && is_array($entry['messaging'])) {
                         foreach ($entry['messaging'] as $message) {
                             if (isset($message['message'])) {
                                 if (isset($message['message']['is_echo'])) {
-                                    $events[] = new MessageEcho($message);
+                                    $events[] = new MessageEcho($message, $entryEvent);
                                 } elseif (isset($message['message']['quick_reply'])) {
-                                    $events[] = new QuickReply($message);
+                                    $events[] = new QuickReply($message, $entryEvent);
                                 } else {
-                                    $events[] = new Message($message);
+                                    $events[] = new Message($message, $entryEvent);
                                 }
                             } elseif (isset($message['delivery'])) {
-                                $events[] = new Delivered($message);
+                                $events[] = new Delivered($message, $entryEvent);
                             } elseif ((isset($message['read']))) {
-                                $events[] = new Read($message);
+                                $events[] = new Read($message, $entryEvent);
                             } elseif ((isset($message['postback']))) {
-                                $events[] = new PostbackMessage($message);
+                                $events[] = new PostbackMessage($message, $entryEvent);
                             } elseif ((isset($message['optin']))) {
-                                $events[] = new Optin($message);
+                                $events[] = new Optin($message, $entryEvent);
                             } elseif ((isset($message['referral']))) {
-                                $events[] = new Referral($message);
+                                $events[] = new Referral($message, $entryEvent);
                             }
                         }
                     }
 
-                    if (isset($entry['changes']) && is_array($entry['changes'])){
+                    if (isset($entry['changes']) && is_array($entry['changes'])) {
                         foreach ($entry['changes'] as $change) {
-                            $events[] = new Changes($change);
+                            $events[] = new Changes($change, $entryEvent);
                         }
                     }
                 }

@@ -13,8 +13,10 @@ use FacebookBot\Api\Event;
 class Read extends Event
 {
 
-    public function __construct(array $data)
+    public function __construct(array $data, Event $entryEvent = null )
     {
+
+        parent::__construct($data, $entryEvent);
 
         $this->event = new \FacebookBot\Api\Read($data);
 
