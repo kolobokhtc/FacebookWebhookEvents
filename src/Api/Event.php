@@ -37,7 +37,18 @@ class Event
     {
 
         if (!is_null($this->entryEvent) && $this->entryEvent instanceof Event) {
-            return $this->entryEvent->getEvent();
+            return $this->entryEvent;
+        }
+
+        return false;
+    }
+
+    public function getEntry()
+    {
+        $entryEvent = $this->getEntryEvent();
+
+        if ($entryEvent instanceof \FacebookBot\Api\Event\Entry) {
+            return $entryEvent->getEvent();
         }
 
         return false;
