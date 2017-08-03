@@ -54,6 +54,14 @@ try {
         })->onChanges(function (Event $event) {
             echo "CHANGES EVENT CALLBACK\n";
             $data = $event->getEvent();
+
+            $pageId = null;
+            $time = null;
+            if ($event->getEntry() instanceof \FacebookBot\Api\Entry) {
+                $pageId = $event->getEntry()->getId();
+                $time = $event->getEntry()->getTime();
+            }
+
             $field = $data->getField();
             $value = $data->getValue();
 
@@ -61,7 +69,7 @@ try {
             $page_id = (isset($value['page_id'])) ? $value['page_id'] : false;
             $thread_key = (isset($value['thread_key'])) ? $value['thread_key'] : false;
 
-            var_dump($field, $value, $thread_id, $page_id, $thread_key);
+            var_dump($pageId, $field, $value, $thread_id, $page_id, $thread_key);
 
         })->run($event);
     } catch (RuntimeException $e) {

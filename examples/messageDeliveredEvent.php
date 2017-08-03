@@ -63,6 +63,13 @@ try {
             echo "MESSAGE EVENT CALLBACK\n";
             $data = $event->getEvent();
 
+            $pageId = null;
+            $time = null;
+            if ($event->getEntry() instanceof \FacebookBot\Api\Entry) {
+                $pageId = $event->getEntry()->getId();
+                $time = $event->getEntry()->getTime();
+            }
+
             $senderId = $data->getSender()->getId();
             $recipientId = $data->getRecipient()->getId();
 
@@ -74,7 +81,7 @@ try {
                 $seq = $delivery['seq'];
             }
 
-            var_dump($senderId, $recipientId, $delivery, $mids, $watermark, $seq);
+            var_dump($pageId, $senderId, $recipientId, $delivery, $mids, $watermark, $seq);
 
         })->run($event);
     } catch (RuntimeException $e) {
